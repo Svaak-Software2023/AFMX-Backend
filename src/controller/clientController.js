@@ -1,4 +1,4 @@
-const clientService = require("../client/clientService");
+const clientService = require("../services/clientService");
 
 const registerClient = async (req, res) => {
   try {
@@ -33,34 +33,34 @@ const LoginClient = async (req, res) => {
   }
 };
 
-
 const forgetPassword = async (req, res) => {
   try {
-
     const forgetRequest = await clientService.forgetPassword(req.body);
     console.log("forgetrequest", forgetRequest);
-    return res.status(200).json({message:"Link has been sent in your email", forgetRequest});
-    
+    return res
+      .status(200)
+      .json({ message: "Link has been sent in your email", forgetRequest });
   } catch (error) {
-    return res.status(500).json({error: error.message});
+    return res.status(500).json({ error: error.message });
   }
-}
-
+};
 
 const resetPassword = async (req, res) => {
-  
   try {
-    const resetRequest = await clientService.resetPassword(req.body.userId, req.body.token, req.body.clientPassword );
+    const resetRequest = await clientService.resetPassword(
+      req.body.userId,
+      req.body.token,
+      req.body.clientPassword
+    );
     return res.json(resetRequest);
-
   } catch (error) {
-    return res.status(500).json({error: error.message})
+    return res.status(500).json({ error: error.message });
   }
-}
+};
 
 module.exports = {
   registerClient,
   LoginClient,
   forgetPassword,
-  resetPassword
+  resetPassword,
 };

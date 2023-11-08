@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const clientModel = require("../model/clientModel.js");
 const TokenModel = require("../model/tokenModel.js");
-const { v4: uuidv4 } = require("uuid");
 const crypto = require("crypto");
 const bycrptjs = require("bcryptjs");
 require("dotenv").config();
@@ -30,7 +29,6 @@ const securePassword = async (password) => {
 };
 
 const registerClient = async (signUpDetails, filename) => {
-  console.log("filename", filename);
   const sPassword = await securePassword(signUpDetails.clientPassword);
 
   const {
@@ -55,8 +53,12 @@ const registerClient = async (signUpDetails, filename) => {
     isActive,
   } = signUpDetails;
 
+  // finding the client total number of count
+  let clientCount = 0;
+  clientCount = await clientModel.find().count();
+
   const newClientDetails = await clientModel({
-    clientId: uuidv4(),
+    clientId: clientCount + 1,
     clientPrifix,
     clientFirstName,
     clientMiddleName,
@@ -91,11 +93,11 @@ const registerClient = async (signUpDetails, filename) => {
   }
 };
 
-const LoginClient = async (loginDetils) => {
-  const { clientEmail, clientPassword } = loginDetils;
+const LoginClient = async (loginDetails) => {
+  const { clientEmail, clientPassword } = loginDetails;
 
   if (!clientEmail || !clientPassword) {
-    throw new Error("clientEmail and clientPassword must be compulsary !");
+    throw new Error("clientEmail and clientPassword must be compulsory !");
   }
 
   const user = await clientModel.findOne({ clientEmail });
@@ -179,11 +181,12 @@ const forgetPassword = async (forgetDetails) => {
     createdAt: Date.now(),
   }).save();
 
+  // Prepare the here for users
   const link = `<div style="width: 100%;margin: auto;">
     <h3>Hi ${user.clientFirstName} ${user.clientMiddleName},</h3>
     <p>You requested to reset your password</p>
     <p>Please, click the link below to reset your password</p>
-    <a href="${client_url}/api/reset-password?&token=${randomBytesString}&id=${user._id}" style="width:100%; background-color:blue;padding: 5px 25px; text-decoration: none; color:#fff;font-weight: 600;">Reset Password</a>
+    <a href="${client_url}/api/reset-password?&token=${randomBytesString}&id=${user._id}" style="width:100%;background-color:blue;padding: 5px 25px; text-decoration: none; color:#fff;font-weight: 600;">Reset Password</a>
   </div>`;
 
   // const link =
@@ -228,7 +231,7 @@ const resetPassword = async (userId, token, clientPassword) => {
 
   const link = ` ${user.clientFirstName} ${user.clientMiddleName}`;
 
-  sendResetPasswordEmail(user.clientEmail,"Password Reset Successfully",link);
+  sendResetPasswordEmail(user.clientEmail, "Password Reset Successfully", link);
 
   await passwordResetToken.deleteOne();
 
