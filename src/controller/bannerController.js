@@ -1,8 +1,9 @@
 const bannerService = require("../services/bannerService");
 
-const bannerHandleImage = async (req, res) => {
+const registerBanner = async (req, res) => {
   try {
-    const bannerResponse = await bannerService.bannerHandleImage(
+    // Handle the register banner response
+    const bannerResponse = await bannerService.registerBanner(
       req.body,
       req.file.filename
     );
@@ -14,11 +15,10 @@ const bannerHandleImage = async (req, res) => {
   }
 };
 
-const bannerUpdate = async (req, res) => {
-  console.log("inside controller");
+const updateBanner = async (req, res) => {
   try {
-    console.log("bannerId", req.params.bannerId);
-    const bannerUpdateResponse = await bannerService.bannerUpdate(
+    // Handle the update banner response
+    const bannerUpdateResponse = await bannerService.updateBanner(
       req.params.bannerId,
       req.body
     );
@@ -28,11 +28,10 @@ const bannerUpdate = async (req, res) => {
   }
 };
 
-const bannerDelete = async (req, res) => {
-  console.log("inside controller");
+const deleteBanner = async (req, res) => {
   try {
-    console.log("bannerId", req.params.bannerId);
-    const bannerDeleteResponse = await bannerService.bannerDelete(
+    // Handle the delete banner response based on bannerId
+    const bannerDeleteResponse = await bannerService.deleteBanner(
       req.params.bannerId,
       req.body
     );
@@ -43,7 +42,7 @@ const bannerDelete = async (req, res) => {
 };
 
 module.exports = {
-  bannerHandleImage,
-  bannerUpdate,
-  bannerDelete,
+  registerBanner,
+  updateBanner,
+  deleteBanner,
 };

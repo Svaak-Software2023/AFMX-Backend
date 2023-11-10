@@ -2,14 +2,15 @@ const clientService = require("../services/clientService");
 
 const registerClient = async (req, res) => {
   try {
-    const signUpService = await clientService.registerClient(
+    // Handle the register client response.
+    const signUpResponse = await clientService.registerClient(
       req.body,
       req.file.filename
     );
 
     return res
       .status(201)
-      .json({ message: "client created successfully", signUpService });
+      .json({ message: "Client Created Successfully", signUpResponse });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -17,12 +18,15 @@ const registerClient = async (req, res) => {
 
 const LoginClient = async (req, res) => {
   try {
-    const signInService = await clientService.LoginClient(req.body);
+    // Handle the login response.
+    const signInResponse = await clientService.LoginClient(req.body);
 
-    return res.status(200).json({ message: "Login Succefully", signInService });
+    return res
+      .status(200)
+      .json({ message: "Login Succefully", signInResponse });
   } catch (error) {
     if (error.message === "Password does not match") {
-      return res.status(401).json({ error: "Invalid credentials password" });
+      return res.status(401).json({ error: "Invalid Credentials Password" });
     } else {
       if (error.message === "User not found") {
         return res.status(401).json({ error: "Unauthorized User" });
@@ -35,11 +39,11 @@ const LoginClient = async (req, res) => {
 
 const forgetPassword = async (req, res) => {
   try {
-    const forgetRequest = await clientService.forgetPassword(req.body);
-    console.log("forgetrequest", forgetRequest);
+    // Handle the forget response.
+    const forgetResponse = await clientService.forgetPassword(req.body);
     return res
       .status(200)
-      .json({ message: "Link has been sent in your email", forgetRequest });
+      .json({ message: "Link has been sent in your email", forgetResponse });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -47,12 +51,13 @@ const forgetPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    const resetRequest = await clientService.resetPassword(
+    // Handle the reset password response.
+    const resetPasswordResponse = await clientService.resetPassword(
       req.body.userId,
       req.body.token,
       req.body.clientPassword
     );
-    return res.json(resetRequest);
+    return res.json(resetPasswordResponse);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

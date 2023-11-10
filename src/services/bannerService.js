@@ -1,9 +1,7 @@
 const BannerModel = require("../model/bannerModel.js");
 const clientModel = require("../model/clientModel.js");
 
-const bannerHandleImage = async (bannerDetails, filename) => {
-  console.log("filename", filename);
-
+const registerBanner = async (bannerDetails, filename) => {
   const {
     businessName,
     businessURL,
@@ -22,12 +20,12 @@ const bannerHandleImage = async (bannerDetails, filename) => {
   } = bannerDetails;
 
   const client = await clientModel.findOne({ clientId });
-  console.log("client", client);
 
   let bannerCount = 0;
   bannerCount = await BannerModel.find().count();
 
   if (client) {
+    // Creating banner model based on UI
     const newBannerDetails = await BannerModel({
       bannerId: bannerCount + 1,
       businessName,
@@ -48,27 +46,23 @@ const bannerHandleImage = async (bannerDetails, filename) => {
     });
 
     const bannerCreateDetails = await newBannerDetails.save();
-    console.log("saved", bannerCreateDetails);
     return bannerCreateDetails;
   } else {
-    console.log("else");
     throw new Error(
       "Your clientId does not exists, go to singup then create banner"
     );
   }
 };
 
-const bannerUpdate = async (bannerId, updateDetails) => {
-  console.log("bannerId--->", bannerId);
-  console.log("updateDetails", updateDetails);
-
+const updateBanner = async (bannerId, updateDetails) => {
+  // check existing bannerId
   const bannerData = await BannerModel.findOne({ bannerId: bannerId });
 
   if (!bannerData) {
     throw new Error("Banner data is not found");
   }
-  // update only if isActive is true
 
+  // update only if isActive is true
   const updateData = await BannerModel.findOneAndUpdate(
     { bannerId: bannerId },
     { $set: updateDetails },
@@ -81,18 +75,15 @@ const bannerUpdate = async (bannerId, updateDetails) => {
   return updateData;
 };
 
-const bannerDelete = async (bannerId, deleteDetails) => {
-  console.log("bannerId--->", bannerId);
-  console.log("deleteDetails", deleteDetails);
-
+const deleteBanner = async (bannerId, deleteDetails) => {
+  // check existing bannerId
   const bannerData = await BannerModel.findOne({ bannerId: bannerId });
-  console.log("bannerData", bannerData);
+
   if (!bannerData) {
     throw new Error("Banner data is not found");
   }
 
   // update only if isActive is true
-
   const updateData = await BannerModel.findOneAndUpdate(
     { bannerId: bannerId },
     { $set: deleteDetails },
@@ -104,8 +95,9 @@ const bannerDelete = async (bannerId, deleteDetails) => {
 
   return updateData;
 };
+
 module.exports = {
-  bannerHandleImage,
-  bannerUpdate,
-  bannerDelete,
+  registerBanner,
+  updateBanner,
+  deleteBanner,
 };

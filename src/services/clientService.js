@@ -148,13 +148,13 @@ const LoginClient = async (loginDetails) => {
         isActive: user.isActive,
         token: tokenData,
       };
-      const response = {
-        success: true,
-        message: "Client Details",
-        data: userDetails,
-      };
+      // const response = {
+      //   success: true,
+      //   message: "Client Details",
+      //   data: userDetails,
+      // };
 
-      return response;
+      return userDetails;
     } else {
       throw new Error("Password does not match");
     }
