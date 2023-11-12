@@ -181,22 +181,13 @@ const forgetPassword = async (forgetDetails) => {
     createdAt: Date.now(),
   }).save();
 
-  // Prepare the here for users
+  // Prepare data for users here.
   const link = `<div style="width: 100%;margin: auto;">
     <h3>Hi ${user.clientFirstName} ${user.clientMiddleName},</h3>
     <p>You requested to reset your password</p>
     <p>Please, click the link below to reset your password</p>
     <a href="${client_url}/api/reset-password?&token=${randomBytesString}&id=${user._id}" style="width:100%;background-color:blue;padding: 5px 25px; text-decoration: none; color:#fff;font-weight: 600;">Reset Password</a>
   </div>`;
-
-  // const link =
-  //   "Hi " +
-  //   user.clientFirstName +
-  //   ', please click the link <a href= "http://localhost:5000/api/reset-password?&token=' +
-  //   randomBytesString +
-  //   "&id=" +
-  //   user._id +
-  //   '"> reset your password </a>';
 
   sendResetPasswordEmail(clientEmail, "Password Reset Request", link);
   return { link };

@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendResetPasswordEmail = (email, subject, data) => {
+const sendEmail = (email, subject, data) => {
   try {
     // create reusable transporter object using the default SMTP transport
     const transporter = nodemailer.createTransport({
@@ -8,8 +8,8 @@ const sendResetPasswordEmail = (email, subject, data) => {
       port: process.env.EMAIL_PORT,
       secure: true,
       auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
+        user: process.env.ADMIN_EMAIL,
+        pass: process.env.ADMIN_PASSWORD,
       },
     });
 
@@ -21,7 +21,6 @@ const sendResetPasswordEmail = (email, subject, data) => {
         html: data,
       };
     };
-
     // Send email
     transporter.sendMail(mailOptions(), (error, info) => {
       if (error) {
@@ -35,4 +34,4 @@ const sendResetPasswordEmail = (email, subject, data) => {
   }
 };
 
-module.exports = sendResetPasswordEmail;
+module.exports = sendEmail;

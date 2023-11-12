@@ -12,6 +12,7 @@ const country_route = require("./src/routes/countryRoute.js");
 const state_route = require("./src/routes/stateRoute.js");
 const city_route = require("./src/routes/cityRoute.js");
 const join_route = require("./src/routes/joinRoute.js");
+const contact_route = require("./src/routes/contactRoute.js");
 
 const url = process.env.DB_URL;
 const port = process.env.PORT;
@@ -30,6 +31,7 @@ app.use("/api", country_route);
 app.use("/api", state_route);
 app.use("/api", city_route);
 app.use("/api", join_route);
+app.use('/api', contact_route);
 
 // mongoDB Connection
 mongoose
