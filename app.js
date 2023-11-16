@@ -14,8 +14,8 @@ const city_route = require("./src/routes/cityRoute.js");
 const join_route = require("./src/routes/joinRoute.js");
 const contact_route = require("./src/routes/contactRoute.js");
 
-const url = process.env.DB_URL;
-const port = process.env.PORT;
+const DB_URL = process.env.DB_URL;
+const PORT = process.env.PORT;
 
 // for http request
 app.use(morgan("dev"));
@@ -35,8 +35,8 @@ app.use('/api', contact_route);
 
 // mongoDB Connection
 mongoose
-  .connect(url)
+  .connect(DB_URL)
   .then(() => {
-    app.listen(port, () => console.log(`Server runing on the port ${port}`));
+    app.listen(PORT, () => console.log(`Server runing on the port ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
